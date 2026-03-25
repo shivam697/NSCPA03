@@ -1,0 +1,173 @@
+══════════════════════════════════════════════════════════════
+   RSA-BASED PUBLIC KEY DISTRIBUTION AUTHORITY (PKDA)
+   Full Demo: Key Generation → Exchange → Encrypted Messaging
+══════════════════════════════════════════════════════════════
+
+──────────────── STEP 1 — PKDA Initialization ────────────────
+============================================================
+[PKDA] Generating RSA key pair …
+[PKDA]  p          = 18190308999631794503
+[PKDA]  q          = 13999868511318183311
+[PKDA]  n          = 254661934175092923202588537188836139433
+[PKDA]  φ(n)       = 254661934175092923170398359677886161620
+[PKDA]  e (pub)    = 65537
+[PKDA]  d (priv)   = 33697427303147929104684293988535160193
+[PKDA] Public key  : (e=65537, n=254661934175092923202588537188836139433)
+============================================================
+
+──────── STEP 2 — Alice Initialization & Registration ────────
+
+[Alice] Generating RSA key pair …
+[Alice]  p          = 16673878413240767561
+[Alice]  q          = 17300999729289271771
+[Alice]  n          = 288474765913680751922649817650769820531
+[Alice]  φ(n)       = 288474765913680751888674939508239781200
+[Alice]  e (pub)    = 65537
+[Alice]  d (priv)   = 63358191259311850446092849524415267873
+[PKDA] Registered 'Alice'  →  public key (e=65537, n=288474765913680751922649817650769820531)
+
+───────── STEP 3 — Bob Initialization & Registration ─────────
+
+[Bob] Generating RSA key pair …
+[Bob]  p          = 14962503456901473469
+[Bob]  q          = 10286241968008604837
+[Bob]  n          = 153907931004853765541224920696260569553
+[Bob]  φ(n)       = 153907931004853765515976175271350491248
+[Bob]  e (pub)    = 65537
+[Bob]  d (priv)   = 73077910142500259018968622642078285345
+[PKDA] Registered 'Bob'  →  public key (e=65537, n=153907931004853765541224920696260569553)
+
+───── STEP 4 — Alice requests Bob's public key from PKDA ─────
+
+[Alice] → Requesting public key of 'Bob' from PKDA
+[Alice]   nonce_A = 255428481833447533042221871909158026810
+
+[PKDA] → Key request: 'Alice' asks for 'Bob' public key
+[PKDA]   timestamp        = 2026-03-25 05:38:40 UTC
+[PKDA]   nonce_A          = 255428481833447533042221871909158026810        
+[PKDA]   target e_B       = 65537
+[PKDA]   target n_B       = 153907931004853765541224920696260569553        
+[PKDA]   plaintext payload: {"nonce_a": 255428481833447533042221871909158026810, "requester": "Alice", "target": "Bob", "target_pub_e": 65537, "target_pub_n": 153907931004853765541224920696260569553, "timestamp": 1774417120} 
+[PKDA]   encrypted chunks : [170028595523782865510020140728700066459, 149056093027005665117725856527534334073]...
+[PKDA]   (encrypted with PKDA private key d)
+[Alice] ✓ PKDA response decrypted successfully (authentic).
+[Alice]   response timestamp = 2026-03-25 05:38:40 UTC
+[Alice]   nonce verified     = 255428481833447533042221871909158026810     
+[Alice]   stored public key of 'Bob': (e=65537, n=153907931004853765541224920696260569553)
+
+───── STEP 5 — Bob requests Alice's public key from PKDA ─────
+
+[Bob] → Requesting public key of 'Alice' from PKDA
+[Bob]   nonce_A = 22259091803518352273802517876350043162
+
+[PKDA] → Key request: 'Bob' asks for 'Alice' public key
+[PKDA]   timestamp        = 2026-03-25 05:38:40 UTC
+[PKDA]   nonce_A          = 22259091803518352273802517876350043162
+[PKDA]   target e_B       = 65537
+[PKDA]   target n_B       = 288474765913680751922649817650769820531        
+[PKDA]   plaintext payload: {"nonce_a": 22259091803518352273802517876350043162, "requester": "Bob", "target": "Alice", "target_pub_e": 65537, "target_pub_n": 288474765913680751922649817650769820531, "timestamp": 1774417120}  
+[PKDA]   encrypted chunks : [43031428885724636074308636397019896673, 235897482820313346428154436171088174606]...
+[PKDA]   (encrypted with PKDA private key d)
+[Bob] ✓ PKDA response decrypted successfully (authentic).
+[Bob]   response timestamp = 2026-03-25 05:38:40 UTC
+[Bob]   nonce verified     = 22259091803518352273802517876350043162        
+[Bob]   stored public key of 'Alice': (e=65537, n=288474765913680751922649817650769820531)
+
+─── STEP 5b — Alice requests her own public key from PKDA ───
+
+[Alice] → Requesting public key of 'Alice' from PKDA
+[Alice]   nonce_A = 84981800252203784521792892031764000271
+
+[PKDA] → Key request: 'Alice' asks for 'Alice' public key
+[PKDA]   timestamp        = 2026-03-25 05:38:40 UTC
+[PKDA]   nonce_A          = 84981800252203784521792892031764000271
+[PKDA]   target e_B       = 65537
+[PKDA]   target n_B       = 288474765913680751922649817650769820531        
+[PKDA]   plaintext payload: {"nonce_a": 84981800252203784521792892031764000271, "requester": "Alice", "target": "Alice", "target_pub_e": 65537, "target_pub_n": 288474765913680751922649817650769820531, "timestamp": 1774417120}
+[PKDA]   encrypted chunks : [133989108033796826807870249033539064075, 173762973994533748438103051477799326011]...
+[PKDA]   (encrypted with PKDA private key d)
+[Alice] ✓ PKDA response decrypted successfully (authentic).
+[Alice]   response timestamp = 2026-03-25 05:38:40 UTC
+[Alice]   nonce verified     = 84981800252203784521792892031764000271      
+[Alice]   stored public key of 'Alice': (e=65537, n=288474765913680751922649817650769820531)
+
+─────────── STEP 6 — Alice sends 3 messages to Bob ───────────
+
+[Alice] → Sending to 'Bob'
+[Alice]   plaintext  : Hi1
+[Alice]   timestamp  : 2026-03-25 05:38:40 UTC
+[Alice]   nonce      : 29954035646143629720884395381523533629
+[Alice]   ciphertext : [27372752927830144636077636448079554275, 152902707351897590623553497992069688937]...
+
+[Bob] ← Received from 'Alice'
+[Bob]   body       : Hi1
+[Bob]   timestamp  : 2026-03-25 05:38:40 UTC
+[Bob]   nonce      : 29954035646143629720884395381523533629
+
+[Alice] → Sending to 'Bob'
+[Alice]   plaintext  : Hi2
+[Alice]   timestamp  : 2026-03-25 05:38:40 UTC
+[Alice]   nonce      : 58897359057077574004984120111659212936
+[Alice]   ciphertext : [27372752927830144636077636448079554275, 152902707351897590623553497992069688937]...
+
+[Bob] ← Received from 'Alice'
+[Bob]   body       : Hi2
+[Bob]   timestamp  : 2026-03-25 05:38:40 UTC
+[Bob]   nonce      : 58897359057077574004984120111659212936
+
+[Alice] → Sending to 'Bob'
+[Alice]   plaintext  : Hi3
+[Alice]   timestamp  : 2026-03-25 05:38:40 UTC
+[Alice]   nonce      : 183260882073451572052176355733022884175
+[Alice]   ciphertext : [27372752927830144636077636448079554275, 152902707351897590623553497992069688937]...
+
+[Bob] ← Received from 'Alice'
+[Bob]   body       : Hi3
+[Bob]   timestamp  : 2026-03-25 05:38:40 UTC
+[Bob]   nonce      : 183260882073451572052176355733022884175
+
+─────────────── STEP 7 — Bob responds to Alice ───────────────
+
+[Bob] → Sending to 'Alice'
+[Bob]   plaintext  : Got-it1
+[Bob]   timestamp  : 2026-03-25 05:38:40 UTC
+[Bob]   nonce      : 267568632070819828613786140233270256927
+[Bob]   ciphertext : [126129149936700945186478285529063566840, 124000299138484708629264048738761223809]...
+
+[Alice] ← Received from 'Bob'
+[Alice]   body       : Got-it1
+[Alice]   timestamp  : 2026-03-25 05:38:40 UTC
+[Alice]   nonce      : 267568632070819828613786140233270256927
+
+[Bob] → Sending to 'Alice'
+[Bob]   plaintext  : Got-it2
+[Bob]   timestamp  : 2026-03-25 05:38:40 UTC
+[Bob]   nonce      : 118503450596092667266311129637846705253
+[Bob]   ciphertext : [126129149936700945186478285529063566840, 124000299138484708629264048738761223809]...
+
+[Alice] ← Received from 'Bob'
+[Alice]   body       : Got-it2
+[Alice]   timestamp  : 2026-03-25 05:38:40 UTC
+[Alice]   nonce      : 118503450596092667266311129637846705253
+
+[Bob] → Sending to 'Alice'
+[Bob]   plaintext  : Got-it3
+[Bob]   timestamp  : 2026-03-25 05:38:40 UTC
+[Bob]   nonce      : 126209793498632227203825554579339550053
+[Bob]   ciphertext : [126129149936700945186478285529063566840, 124000299138484708629264048738761223809]...
+
+[Alice] ← Received from 'Bob'
+[Alice]   body       : Got-it3
+[Alice]   timestamp  : 2026-03-25 05:38:40 UTC
+[Alice]   nonce      : 126209793498632227203825554579339550053
+
+─────────────────────── DEMO COMPLETE ───────────────────────
+
+✓  RSA key generation (p, q, n, φ, e, d) — implemented from scratch        
+✓  PKDA response encrypted with PKDA's private key d
+✓  Clients decrypt PKDA response with PKDA's public key e
+✓  Nonce echoed & verified in every PKDA response
+✓  Timestamp included in every PKDA response and message
+✓  Client-to-client messages encrypted with recipient's public key
+✓  Alice → Bob:   Hi1, Hi2, Hi3
+✓  Bob   → Alice: Got-it1, Got-it2, Got-it3
